@@ -40,10 +40,19 @@ animation_delay = 185 # Vitesse de transitions des images en millisecondes
 
 clock = pygame.time.Clock()
 
-#                       Redimentionnement des images
+#                       Redimentionnement des images de l'animation
 for i in range(len(pictures_list)):
     pictures_list[i] = pygame.transform.scale(pictures_list[i], (width, height))
 
+#                       Icône du bouton pour lancer la partie 
+launch_game_icon = pygame.image.load("images/launch_game.png")
+
+#                       Position du bouton pour lancer la partie
+button_launch_x, button_launch_y = 10, 10
+
+#                       Redimentionnement de l'image du bouton pour lancer la partie
+launch_game_icon = pygame.transform.scale(launch_game_icon, (210, 125))
+ 
 #                       Icônes du bouton mute
 speaker_on_icon = pygame.image.load("images/speaker_on.png")
 speaker_off_icon = pygame.image.load("images/speaker_off.png")
@@ -70,7 +79,8 @@ while True:
                     pygame.mixer.music.unpause()
                 else:
                     pygame.mixer.music.pause()
-    
+                    
+#                       Afficage de l'animation    
     screen.blit(pictures_list[current_picture], (0,0))
     
 #                       Affichage du bouton mute
@@ -78,6 +88,9 @@ while True:
       screen.blit(speaker_on_icon, (button_x, button_y))
     else:
         screen.blit(speaker_off_icon, (button_x, button_y))  
+ 
+#                       Affichage du boutton pour lancer la partie
+    screen.blit(launch_game_icon, (button_launch_x, button_launch_y))    
     
     pygame.display.flip()
 
