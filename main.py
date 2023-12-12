@@ -79,7 +79,7 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            # Vérification du clic sur le bouton de mute
+#                        Vérification du clic sur le bouton de mute
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if button_x <= mouse_x <= button_x + image_width and \
                     button_y <= mouse_y <= button_y + image_height :
