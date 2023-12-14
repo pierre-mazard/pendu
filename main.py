@@ -13,11 +13,17 @@ import sys
 #                       Initialisations
 pygame.init()
 pygame.mixer.init()
+pygame.mixer.music.set_volume(0.1)
+
 
 #                       Musique de fond
 music = "sounds\epic_dark.mp3"
 pygame.mixer.music.load(music)
 pygame.mixer.music.play(-1)
+
+
+#                       Bruitage clic start
+start_sound = pygame.mixer.Sound("sounds/start.mp3")
 
 #                       Création de la fenêtre
 height, width  = 800,600
@@ -86,10 +92,16 @@ while True:
                 music_on = not music_on
                 if music_on:
                     pygame.mixer.music.unpause()
+                else:
+                    pygame.mixer.music.pause()
+#                       Vérification du clic sur le bouton start et chargement du module correspondant.             
             elif button_launch_x <= mouse_x <= button_launch_x + 210 and \
                button_launch_y <= mouse_y <= button_launch_y + 125:
+                #                       Jouer le son du boutton
+                start_sound.play()
                 from game import game
                 game.py
+
 #                       Affichage de l'animation de la potence    
     screen.blit(pictures_list[current_picture], (0,0))
     

@@ -17,14 +17,21 @@ pygame.init()
 pygame.mixer.init()
 
 #                       Musique de fond
-music = "sounds\epic_dark.mp3"
+music = "game/sounds/just_relax.mp3"
 pygame.mixer.music.load(music)
+
 pygame.mixer.music.play(-1)
 
 #                       Création de la fenêtre
 height, width  = 800,600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Pendu                                                      Partie lancée !")
+
+#                       Création de la zone de jeu 
+x_game_zone, y_game_zone = 100, 100
+height_game_zone, width_game_zone = 250, 50
+color_rect = (150, 150, 150)
+
 
 #                       Chargement des images de la potence 
 potence00 = pygame.image.load("game/images/potence_00.png")
@@ -94,7 +101,8 @@ while True:
         screen.blit(speaker_on_images[current_image_index], (button_x, button_y))
     else:
         screen.blit(speaker_off_icon, (button_x, button_y))  
-     
+#                       Affichage de la zone de jeu 
+    pygame.draw.rect(screen, color_rect, (x_game_zone, y_game_zone, height_game_zone, width_game_zone))     
     
     pygame.display.flip()
 
