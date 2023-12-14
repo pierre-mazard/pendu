@@ -30,6 +30,13 @@ height, width  = 800,600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Pendu - Menu du jeu")
 
+
+#                       Chargement de l'image du boutton de l'index des mots 
+index_des_mots = pygame.image.load("images/index_des_mots.png")
+
+#                       Redimentionnement de l'image de l'index des mots
+index_des_mots = pygame.transform.scale(index_des_mots, (75, 100))
+
 #                       Chargement des images de l'animation de la potence 
 animation00 = pygame.image.load("images/animation_00.png")
 animation01 = pygame.image.load("images/animation_01.png")
@@ -46,7 +53,7 @@ animation_delay = 185 # Vitesse de transitions des images en millisecondes
 
 clock = pygame.time.Clock()
 
-#                       Redimentionnement des images de l'animation
+#                       Redimentionnement des images de l'animation de la potence
 for i in range(len(pictures_list)):
     pictures_list[i] = pygame.transform.scale(pictures_list[i], (width, height))
 
@@ -114,8 +121,13 @@ while True:
 #                       Affichage du boutton pour lancer la partie
     screen.blit(launch_game_icon, (button_launch_x, button_launch_y))    
     
-    pygame.display.flip()
+    
 
+#                       Affichage du boutton de l'index des mots 
+    screen.blit(index_des_mots, (300, 15))
+
+    pygame.display.flip()    
+#                       Annimations
     current_image_index = (current_image_index + 1) % len(speaker_on_images)
     current_picture = (current_picture + 1) % len(pictures_list)
     pygame.time.delay(animation_delay)
