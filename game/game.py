@@ -28,8 +28,8 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Pendu                                                      Partie lancée !")
 
 #                       Création de la zone de jeu 
-x_game_zone, y_game_zone = 100, 100
-height_game_zone, width_game_zone = 250, 50
+x_game_zone, y_game_zone = 80, 50
+height_game_zone, width_game_zone = 400, 50
 color_rect = (150, 150, 150)
 
 
