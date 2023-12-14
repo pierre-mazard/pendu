@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-11/12/2023
+12/12/2023
 
 @author: Mazard Pierre
 
-#                                  Pendu _ Menu du jeu 
+#                                  Pendu _ Partie lancée ! 
 """
+
+
 #                       Importation des fonctions externes 
 import pygame
 import sys 
@@ -22,36 +24,31 @@ pygame.mixer.music.play(-1)
 #                       Création de la fenêtre
 height, width  = 800,600
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Pendu - Menu du jeu")
+pygame.display.set_caption("Pendu                                                      Partie lancée !")
 
-#                       Chargement des images de l'animation de la potence 
-animation00 = pygame.image.load("images/animation_00.png")
-animation01 = pygame.image.load("images/animation_01.png")
-animation02 = pygame.image.load("images/animation_02.png")
-animation03 = pygame.image.load("images/animation_03.png")
-animation04 = pygame.image.load("images/animation_04.png")
-animation05 = pygame.image.load("images/animation_05.png")
-animation06 = pygame.image.load("images/animation_06.png")
+#                       Chargement des images de la potence 
+potence00 = pygame.image.load("game/images/potence_00.png")
+potence01 = pygame.image.load("game/images/potence_01.png")
+potence02 = pygame.image.load("game/images/potence_02.png")
+potence03 = pygame.image.load("game/images/potence_03.png")
+potence04 = pygame.image.load("game/images/potence_04.png")
+potence05 = pygame.image.load("game/images/potence_05.png")
+potence06 = pygame.image.load("game/images/potence_06.png")
 
 
-pictures_list = [animation00, animation01, animation02, animation03, animation04, animation05, animation06]
+
 current_picture = 0
 animation_delay = 185 # Vitesse de transitions des images en millisecondes
 
 clock = pygame.time.Clock()
 
 #                       Redimentionnement des images de l'animation
-for i in range(len(pictures_list)):
-    pictures_list[i] = pygame.transform.scale(pictures_list[i], (width, height))
 
-#                       Icône du bouton pour lancer la partie 
-launch_game_icon = pygame.image.load("images/launch_game.png")
+potence00 = pygame.transform.scale(potence00, (width, height))
 
-#                       Position du bouton pour lancer la partie
-button_launch_x, button_launch_y = 10, 10
 
-#                       Redimentionnement de l'image du bouton pour lancer la partie
-launch_game_icon = pygame.transform.scale(launch_game_icon, (210, 125))
+
+
  
 #                       Icônes du bouton mute
 speaker_on_icon_00 = pygame.image.load("images/speaker_on_00.png")
@@ -60,7 +57,7 @@ speaker_on_icon_02 = pygame.image.load("images/speaker_on_02.png")
 speaker_on_icon_03 = pygame.image.load("images/speaker_on_03.png")
 speaker_on_icon_04 = pygame.image.load("images/speaker_on_04.png")
 speaker_on_icon_05 = pygame.image.load("images/speaker_on_05.png")
-speaker_off_icon = pygame.image.load("images\speaker_off.png")
+speaker_off_icon = pygame.image.load("images/speaker_off.png")
 
 speaker_on_images = [speaker_on_icon_00, speaker_on_icon_01, speaker_on_icon_02, speaker_on_icon_03, speaker_on_icon_04, speaker_on_icon_05]
 current_image_index = 0
@@ -86,25 +83,21 @@ while True:
                 music_on = not music_on
                 if music_on:
                     pygame.mixer.music.unpause()
-            elif button_launch_x <= mouse_x <= button_launch_x + 210 and \
-               button_launch_y <= mouse_y <= button_launch_y + 125:
-                from game import game
-                game.py
+                else:
+                    pygame.mixer.music.pause()
+                
 #                       Affichage de l'animation de la potence    
-    screen.blit(pictures_list[current_picture], (0,0))
+    screen.blit(potence00, (0,0))
     
 #                       Affichage du bouton mute
     if music_on:
         screen.blit(speaker_on_images[current_image_index], (button_x, button_y))
     else:
         screen.blit(speaker_off_icon, (button_x, button_y))  
- 
-#                       Affichage du boutton pour lancer la partie
-    screen.blit(launch_game_icon, (button_launch_x, button_launch_y))    
+     
     
     pygame.display.flip()
 
     current_image_index = (current_image_index + 1) % len(speaker_on_images)
-    current_picture = (current_picture + 1) % len(pictures_list)
     pygame.time.delay(animation_delay)
     clock.tick(60)
