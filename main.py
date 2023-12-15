@@ -121,6 +121,11 @@ while True:
                 start_sound.play()
                 from game import game
                 game.py
+#                       Vérification du clic sur le boutton index des mots
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if mouse_x > 300 and mouse_x < 375 and mouse_y > 15 and mouse_y < 115:
+                    from game import word_index
+                    word_index.py
 #                       Vérification du passage de la souris sur l'image
         elif event.type == pygame.MOUSEMOTION: 
             mouse_x, mouse_y = pygame.mouse.get_pos()
