@@ -22,20 +22,33 @@ pygame.mixer.music.load(music)
 pygame.mixer.music.play(-1)
 
 
-#                       Bruitage clic start
+#                       Bruitages
 start_sound = pygame.mixer.Sound("sounds/start.mp3")
-
+close_book = pygame.mixer.Sound("sounds/close_book.mp3")
+open_book = pygame.mixer.Sound("sounds/open_book.mp3")
 #                       Création de la fenêtre
 height, width  = 800,600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Pendu - Menu du jeu")
 
 
-#                       Chargement de l'image du boutton de l'index des mots 
+#                       Chargement des images du boutton de l'index des mots 
 index_des_mots = pygame.image.load("images/index_des_mots.png")
+index_des_mots_ouvert = pygame.image.load("images/index_des_mots_ouvert.png")
 
 #                       Redimentionnement de l'image de l'index des mots
 index_des_mots = pygame.transform.scale(index_des_mots, (75, 100))
+index_des_mots_ouvert = pygame.transform.scale(index_des_mots_ouvert, (150, 100))
+
+#                       Position du bouton index des mots
+button_index_x, button_index_y = 300, 15
+
+#                       Dessin de l'image index de smots 
+screen.blit(index_des_mots, (button_index_x, button_index_y))
+
+#                       Définir état actuel de l'image index des mots et du bruitage
+image = index_des_mots
+sound_play_index = False
 
 #                       Chargement des images de l'animation de la potence 
 animation00 = pygame.image.load("images/animation_00.png")
@@ -108,10 +121,30 @@ while True:
                 start_sound.play()
                 from game import game
                 game.py
+#                       Vérification du passage de la souris sur l'image
+        elif event.type == pygame.MOUSEMOTION: 
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if mouse_x > 300 and mouse_x < 375 and mouse_y > 15 and mouse_y < 115:
+#                       Affichage de l'image de remplacement de l'index des mots 
+                image = index_des_mots_ouvert
+#                       Jouer bruitage                
+                if not sound_play_index:
+                    open_book.play()
+                    sound_play_index = True
+            else:
+                image = index_des_mots
+#                       Jouer bruitage
+                if sound_play_index:
+                    close_book.play()
+#                       Réinitialiser état du son
+                sound_play_index = False
 
+    screen.blit(image, (button_index_x, button_index_y))                
+    pygame.display.flip()   
+    
 #                       Affichage de l'animation de la potence    
     screen.blit(pictures_list[current_picture], (0,0))
-    
+   
 #                       Affichage du bouton mute
     if music_on:
         screen.blit(speaker_on_images[current_image_index], (button_x, button_y))
@@ -121,12 +154,9 @@ while True:
 #                       Affichage du boutton pour lancer la partie
     screen.blit(launch_game_icon, (button_launch_x, button_launch_y))    
     
-    
 
-#                       Affichage du boutton de l'index des mots 
-    screen.blit(index_des_mots, (300, 15))
 
-    pygame.display.flip()    
+ 
 #                       Annimations
     current_image_index = (current_image_index + 1) % len(speaker_on_images)
     current_picture = (current_picture + 1) % len(pictures_list)
