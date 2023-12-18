@@ -11,10 +11,11 @@
 #                       Importation des fonctions externes 
 import pygame
 import sys 
-
+from random import choice
 #                       Initialisations
 pygame.init()
 pygame.mixer.init()
+
 
 #                       Musique de fond
 music = "game/sounds/just_relax.mp3"
@@ -27,10 +28,6 @@ height, width  = 800,600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Pendu                                                      Partie lancée !")
 
-#                       Création de la zone de jeu 
-x_game_zone, y_game_zone = 80, 50
-height_game_zone, width_game_zone = 400, 50
-color_rect = (150, 150, 150)
 
 
 #                       Chargement des images de la potence 
@@ -49,14 +46,69 @@ animation_delay = 185 # Vitesse de transitions des images en millisecondes
 
 clock = pygame.time.Clock()
 
-#                       Redimentionnement des images de l'animation
+#                       Redimentionnement des images de la potence
 
 potence00 = pygame.transform.scale(potence00, (width, height))
 
 
+#                       Création de la police
+font = pygame.font.Font(None, 36)
 
+#                       Chargement des mots depuis un fichier
+def choisir_mot():
+    with open('mots.txt', 'r', encoding='utf8') as f:
+        mots = f.readlines()
+    return choice(mots).strip().upper()
 
- 
+#                       Implémentation du jeu du pendu
+def jeu_du_pendu():
+    while True:
+        mot_a_deviner = choisir_mot()
+        mot_masque = '_ ' * len(mot_a_deviner)
+        tentatives_restantes = 10
+
+        while '_' in mot_masque and tentatives_restantes > 0:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.quit()
+                        sys.exit()
+                    elif event.key >= pygame.K_a and event.key <= pygame.K_z:
+                        lettre = chr(event.key).upper()
+
+                        if lettre in mot_a_deviner:
+                            for i, char in enumerate(mot_a_deviner):
+                                if char == lettre:
+                                    mot_masque = mot_masque[:i] + lettre + mot_masque[i+1:]
+                        else:
+                            tentatives_restantes -= 1
+            #                       Affichage de la potence    
+            screen.blit(potence00, (0,0))
+            message_mot = f"Mot à deviner: {mot_masque}"
+            message_tentatives = f"Tentatives restantes: {tentatives_restantes}"
+            text_surface_mot = font.render(message_mot, True, (150, 150, 150))
+            text_surface_tentatives = font.render(message_tentatives, True, (150, 150, 150))
+            screen.blit(text_surface_mot, (10, 10))
+            screen.blit(text_surface_tentatives, (10, 50))
+            pygame.display.flip()  # Met à jour l'affichage
+
+        if '_' not in mot_masque:
+            message_gagne = f"Félicitations! Vous avez deviné le mot: {mot_a_deviner}"
+            text_surface_gagne = font.render(message_gagne, True, (0, 150, 0))
+            screen.blit(text_surface_gagne, (10, 100))
+        else:
+            message_perdu = f"Dommage! Le mot était: {mot_a_deviner}"
+            text_surface_perdu = font.render(message_perdu, True, (150, 1, 0))
+            screen.blit(text_surface_perdu, (10, 100))
+            pygame.display.flip()  # Met à jour l'affichage
+            pygame.time.delay(2000)  # Attend avant de quitter
+
+        pygame.display.flip()  # Met à jour l'affichage
+        pygame.time.delay(2000)  # Attend avant de recommencer    
+
 #                       Icônes du bouton mute
 speaker_on_icon_00 = pygame.image.load("images/speaker_on_00.png")
 speaker_on_icon_01 = pygame.image.load("images/speaker_on_01.png")
@@ -93,19 +145,18 @@ while True:
                 else:
                     pygame.mixer.music.pause()
                 
-#                       Affichage de l'animation de la potence    
-    screen.blit(potence00, (0,0))
+
     
 #                       Affichage du bouton mute
     if music_on:
         screen.blit(speaker_on_images[current_image_index], (button_x, button_y))
     else:
         screen.blit(speaker_off_icon, (button_x, button_y))  
-#                       Affichage de la zone de jeu 
-    pygame.draw.rect(screen, color_rect, (x_game_zone, y_game_zone, height_game_zone, width_game_zone))     
-    
-    pygame.display.flip()
+     
+    jeu_du_pendu()
+
 
     current_image_index = (current_image_index + 1) % len(speaker_on_images)
     pygame.time.delay(animation_delay)
     clock.tick(60)
+    pygame.display.flip()
